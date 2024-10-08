@@ -3,8 +3,10 @@ package com.example.demo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // 컨트롤러는 유저가 보는 곳
 // request 유저가 요청하는 것
@@ -27,24 +29,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 // bean <- 스프링 내부에서 관리하는 static
 // bean 들을 모아놓은 곳 -> IoC 컨테이너 (spring bean 컨테이너)
+
+// method : GET, POST
+// GET <- body(X) url ? 데이터=asdf
+// POST <- body(O) json:{데이터:"asdf"}
 @Controller
 public class TestController {
     // 의존성 주입 <- Bean 에서 꺼내 사용하는 것
     String test2;
     Student 학생;
     Data data;
-    public TestController(String test2, Student 학생, Data data) {
-        this.test2 = test2;
-        this.학생 = 학생;
-        this.data = data;
-    }
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(HttpServletRequest request) {
-        System.out.println(request.getRemoteAddr());
-        System.out.println(test2 + " " + 학생);
-        System.out.println(data.list);
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(Model model) {
+//      System.out.println(request.getRemoteAddr());
+//      System.out.println(test2 + " " + 학생);
+//      System.out.println(data.list);
+//      data.list.add(new Student());
+        model.addAttribute("student",학생);
+        model.addAttribute("list",data.list);
         return "index";
+    }
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public String postStudent(HttpServletRequest request
+            , @RequestParam String name, @RequestParam Integer age) {
+        Student student = new Student(name, age);
+        data.list.add(student);
+        return "redirect:/";
     }
     // localhost8080:java
     @RequestMapping(value = "/java", method = RequestMethod.GET)
@@ -54,5 +66,10 @@ public class TestController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
         return "test";
+    }
+    public TestController(String test2, Student 학생, Data data) {
+        this.test2 = test2;
+        this.학생 = 학생;
+        this.data = data;
     }
 }

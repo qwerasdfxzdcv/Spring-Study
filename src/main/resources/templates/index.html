@@ -5,9 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>뿌우우웅</h1>
+    <h1>ㅁㄴㅇㄹ</h1>
+    <h2 th:text="${student.name}"></h2>
     <a href="java">java</a>
     <a href="test">test</a>
-    <a href="index">index</a>
+    <a href="/">index</a>
+    <form method="post" action="/">
+        <input type="text" name="name" />
+        <input type="number" name="age" />
+        <input type="submit" value="추가" />
+    </form>
+    <div th:each="stu: ${list}" style="border: 1px solid blue">
+        <h2 th:text="${stu.name + '　' + stu.age}"></h2>
+    </div>
 </body>
 </html>
