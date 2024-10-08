@@ -30,12 +30,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class TestController {
     // 의존성 주입 <- Bean 에서 꺼내 사용하는 것
-    @Autowired
-    String test;
+    String test2;
+    Student 학생;
+    Data data;
+    public TestController(String test2, Student 학생, Data data) {
+        this.test2 = test2;
+        this.학생 = 학생;
+        this.data = data;
+    }
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest request) {
         System.out.println(request.getRemoteAddr());
-        System.out.println(test);
+        System.out.println(test2 + " " + 학생);
+        System.out.println(data.list);
         return "index";
     }
     // localhost8080:java
